@@ -1,4 +1,3 @@
-import resolver from 'bower-npm-resolver';
 import Notiflix from 'notiflix';
 
 const refs = {
@@ -7,14 +6,19 @@ const refs = {
 
 refs.form.addEventListener('submit', createPromise)
 
-let position = 0
+function createPromise(event) {
 
-function createPromise(position, delay, e) {
-  e.preventDefault();
+  let formDelay = Number(event.currentTarget.delay.value)
+  let formStep = Number(event.currentTarget.step.value)
+  let formAmount = Number(event.currentTarget.amount.value)
 
-  position += 1
-  
+  for (let index = 0; index < formAmount -1; index++) {
+    let position = index+1;
+    let delay = formDelay + formStep * index 
+  }
+
   return new Promise((resolve, reject) => {
+      event.preventDefault();
     const shouldResolve = Math.random() > 0.3;
     
     setTimeout(() => {
@@ -29,7 +33,7 @@ function createPromise(position, delay, e) {
   })
 }
 
-createPromise({ position, delay })
+createPromise()
   .then(({ position, delay }) => {
     Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
   })
